@@ -65,5 +65,29 @@ public static class ToDoItemsEndpoints
             await Task.Delay(1000);
             return Results.NoContent();
         });
+
+
+        app.MapGet("/products", async (NorthwindContext con) => {
+            var data =
+            await con.Products
+            .Select(p => new ProductDTO
+            {
+                Id = p.ProductId,
+                Name = p.ProductName,
+                Category = p.Category.CategoryName
+            })
+            .ToListAsync();
+            return Results.Ok(data);
+        });
+
+        app.MapGet("/boom", () =>
+        {
+            throw new InvalidProgramException("Problema serissimo");
+        });
+
+
+
+
+
     }
 }

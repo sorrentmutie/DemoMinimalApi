@@ -1,3 +1,5 @@
+using MyApi.Middlewares;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -7,29 +9,17 @@ builder.Services.RegisterServices();
 
 var app = builder.Build();
 
+app.UseMiddleware<GlobalExceptionMiddleware>();
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    //app.UseExceptionHandler();
 }
 
 app.RegisterToDoItemsEndpoints(); 
-
-app.MapGet("/products", async (NorthwindContext con) => {
-    var data = 
-    await con.Products
-    .Select(p => new ProductDTO
-    {
-         Id = p.ProductId,
-         Name = p.ProductName,
-         Category = p.Category.CategoryName
-    })
-    .ToListAsync();
-    return Results.Ok(data);
-});
-
-
 
 app.UseHttpsRedirection();
 app.Run();
