@@ -9,7 +9,7 @@ public static class ToDoItemsEndpoints
 {
     private static async Task<IResult> GetAll(ITodoItems service)
     {
-        //esempio
+        //esempio di modifica
         return Results.Ok(await service.GetAllItems());
     }
 
