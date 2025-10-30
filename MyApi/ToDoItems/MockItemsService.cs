@@ -1,14 +1,26 @@
-﻿namespace MyApi.ToDoItems
+﻿using Microsoft.Extensions.Options;
+using MyApi.Configurations;
+
+namespace MyApi.ToDoItems
 {
     public class MockItems : ITodoItems
     {
+
+        public MockItems(IConfiguration configuration, IOptions<AppSettings> appSettings)
+        {
+            this.configuration = configuration;
+            this.appSettings = appSettings;
+        }
         private static List<TodoItem>
             todoItems = new List<TodoItem>() {
           new TodoItem (1,"1",false, "Sport"),
           new TodoItem (2,"2", true, "Hobbies") };
+        private readonly IConfiguration configuration;
+        private readonly IOptions<AppSettings> appSettings;
 
         public async Task<TodoItem> CreateItem(CreateTodoItem newItem)
         {
+         
             var newId = 1;
             await Task.Delay(1000);
             if (todoItems.Count > 0)
@@ -32,6 +44,11 @@
 
         public async Task<List<TodoItem>> GetAllItems()
         {
+            var miovalore = configuration["MiaChiave"];
+            var miovaloreA = configuration["MyKeyComplessa:A"];
+            var x = appSettings.Value.A;
+
+
             await Task.Delay(1000);
             return todoItems;
         }
